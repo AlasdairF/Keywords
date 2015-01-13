@@ -95,40 +95,44 @@ func (a sorter) Len() int           { return len(a) }
 func (a sorter) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a sorter) Less(i, j int) bool { return a[i].v > a[j].v } // descending order
 
-func Monogram(b []byte, num int) []string {
-	
+type keywordsStruct struct {
+	km map[string]uint32
+}
+
+func New() *keywordsStruct {
+	k := new(keywordsStruct)
+	k.km = make(map[string]uint32)
+	return k
+}
+
+func (k *keywordsStruct) Monogram(b []byte) {
 	var err error
 	var d []byte
 	var ok bool
-	keywords := make(map[string]uint32)
 	wordfn := func(word []byte) {
 		if d, err = deaccent.Bytes(word); err == nil {
 			if len(d) >= 3 {
 				if _, ok = stopwords[string(d)]; !ok {
-					keywords[string(word)]++
+					k.km[string(word)]++
 				}
 			}
 		}
 	}
 	tokenize.AllInOne(b, wordfn, true, false, true, true, false)
-	return finalize(keywords, num)
-	
 }
 
-func Bigram(b []byte, num int) []string {
-	
+func (k *keywordsStruct) Bigram(b []byte) {
 	var err error
 	var d []byte
 	var ok, last bool
 	var lastword, word1 string
-	keywords := make(map[string]uint32)
 	wordfn := func(word []byte) {
 		if d, err = deaccent.Bytes(word); err == nil {
 			if len(d) >= 3 {
 				if _, ok = stopwords[string(d)]; !ok {
 					word1 = string(word)
 					if last {
-						keywords[lastword + ` ` + word1]++
+						k.km[lastword + ` ` + word1]++
 					}
 					lastword = word1
 					last = true
@@ -143,26 +147,22 @@ func Bigram(b []byte, num int) []string {
 		}
 	}
 	tokenize.AllInOne(b, wordfn, true, false, true, true, false)
-	return finalize(keywords, num)
-	
 }
 
-func Ngram(b []byte, num int) []string {
-	
+func (k *keywordsStruct) Ngram(b []byte) {
 	var err error
 	var d []byte
 	var ok, last bool
 	var lastword, word1 string
-	keywords := make(map[string]uint32)
 	wordfn := func(word []byte) {
 		if d, err = deaccent.Bytes(word); err == nil {
 			if len(d) >= 3 {
 				if _, ok = stopwords[string(d)]; !ok {
 					word1 = string(word)
 					if last {
-						keywords[lastword + ` ` + word1]++
+						k.km[lastword + ` ` + word1]++
 					} else {
-						keywords[word1]++
+						k.km[word1]++
 					}
 					lastword = word1
 					last = true
@@ -177,18 +177,15 @@ func Ngram(b []byte, num int) []string {
 		}
 	}
 	tokenize.AllInOne(b, wordfn, true, false, true, true, false)
-	return finalize(keywords, num)
-	
 }
 
-func finalize(keywords map[string]uint32, num int) []string {
-	lst := make(sorter, len(keywords))
+func (k *keywordsStruct) Result(num int) []string {
+	lst := make(sorter, len(k.km))
 	var i int
-	for word, v := range keywords {
+	for word, v := range k.km {
 		lst[i] = keyVal{word, v}
 		i++
 	}
-	
 	sort.Sort(lst)
 	if num > i {
 		num = i
@@ -197,6 +194,5 @@ func finalize(keywords map[string]uint32, num int) []string {
 	for i=0; i<num; i++ {
 		res[i] = lst[i].k
 	}
-	
 	return res
 }
