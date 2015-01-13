@@ -102,44 +102,12 @@ func Monogram(b []byte, num int) ([]string, error) {
 	var ok bool
 	keywords := make(map[string]uint32)
 	wordfn := func(word []byte) {
-		if d, err = deaccent.Bytes(word); err != nil {
-			return nil, err
-		}
-		if len(d) >= 3 {
-			if _, ok = stopwords[string(d)]; !ok {
-				keywords[string(word)]++
-			}
-		}
-	}
-	tokenize.AllInOne(b, wordfn, true, false, true, true, false)
-	return finalize(keywords, num)
-	
-}
-
-func Bigram(b []byte, num int) ([]string, error) {
-	
-	var err error
-	var d []byte
-	var ok, last bool
-	var lastword, word1 string
-	keywords := make(map[string]uint32)
-	wordfn := func(word []byte) {
-		if d, err = deaccent.Bytes(word); err != nil {
-			return nil, err
-		}
-		if len(d) >= 3 {
-			if _, ok = stopwords[string(d)]; !ok {
-				word1 = string(word)
-				if last {
-					keywords[word1 + ` ` + lastword]++
+		if d, err = deaccent.Bytes(word); err == nil {
+			if len(d) >= 3 {
+				if _, ok = stopwords[string(d)]; !ok {
+					keywords[string(word)]++
 				}
-				lastword = word1
-				last = true
-			} else {
-				last = false
 			}
-		} else {
-			last = false
 		}
 	}
 	tokenize.AllInOne(b, wordfn, true, false, true, true, false)
@@ -147,7 +115,7 @@ func Bigram(b []byte, num int) ([]string, error) {
 	
 }
 
-func Ngram(b []byte, num int) ([]string, error) {
+func Bigram(b []byte, num int) []string {
 	
 	var err error
 	var d []byte
@@ -155,19 +123,18 @@ func Ngram(b []byte, num int) ([]string, error) {
 	var lastword, word1 string
 	keywords := make(map[string]uint32)
 	wordfn := func(word []byte) {
-		if d, err = deaccent.Bytes(word); err != nil {
-			return nil, err
-		}
-		if len(d) >= 3 {
-			if _, ok = stopwords[string(d)]; !ok {
-				word1 = string(word)
-				if last {
-					keywords[word1 + ` ` + lastword]++
+		if d, err = deaccent.Bytes(word); err == nil {
+			if len(d) >= 3 {
+				if _, ok = stopwords[string(d)]; !ok {
+					word1 = string(word)
+					if last {
+						keywords[word1 + ` ` + lastword]++
+					}
+					lastword = word1
+					last = true
 				} else {
-					keywords[word1]++
+					last = false
 				}
-				lastword = word1
-				last = true
 			} else {
 				last = false
 			}
@@ -180,7 +147,41 @@ func Ngram(b []byte, num int) ([]string, error) {
 	
 }
 
-func finalize(keywords map[string]uint32, num int) ([]string, error) {
+func Ngram(b []byte, num int) []string {
+	
+	var err error
+	var d []byte
+	var ok, last bool
+	var lastword, word1 string
+	keywords := make(map[string]uint32)
+	wordfn := func(word []byte) {
+		if d, err = deaccent.Bytes(word); err == nil {
+			if len(d) >= 3 {
+				if _, ok = stopwords[string(d)]; !ok {
+					word1 = string(word)
+					if last {
+						keywords[word1 + ` ` + lastword]++
+					} else {
+						keywords[word1]++
+					}
+					lastword = word1
+					last = true
+				} else {
+					last = false
+				}
+			} else {
+				last = false
+			}
+		} else {
+			last = false
+		}
+	}
+	tokenize.AllInOne(b, wordfn, true, false, true, true, false)
+	return finalize(keywords, num)
+	
+}
+
+func finalize(keywords map[string]uint32, num int) []string {
 	lst := make(sorter, len(keywords))
 	var i int
 	for word, v := range keywords {
@@ -197,5 +198,5 @@ func finalize(keywords map[string]uint32, num int) ([]string, error) {
 		res[i] = lst[i].k
 	}
 	
-	return res, nil
+	return res
 }
