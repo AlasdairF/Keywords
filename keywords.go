@@ -128,7 +128,7 @@ func Bigram(b []byte, num int) []string {
 				if _, ok = stopwords[string(d)]; !ok {
 					word1 = string(word)
 					if last {
-						keywords[lasword + ` ` + word1]++
+						keywords[lastword + ` ` + word1]++
 					}
 					lastword = word1
 					last = true
@@ -160,7 +160,7 @@ func Ngram(b []byte, num int) []string {
 				if _, ok = stopwords[string(d)]; !ok {
 					word1 = string(word)
 					if last {
-						keywords[lasword + ` ` + word1]++
+						keywords[lastword + ` ` + word1]++
 					} else {
 						keywords[word1]++
 					}
