@@ -83,7 +83,7 @@ var stopwords = map[string]bool{
 	`wer`:false, `werde`:false, `werden`:false, `werdet`:false, `were`:false, `werent`:false, `weshalb`:false, `weve`:false, `what`:false, `whatll`:false, `whats`:false, `when`:false, `whens`:false, `where`:false, `wheres`:false, `whether`:false,
 	`which`:false, `while`:false, `who`:false, `whod`:false, `wholl`:false, `whos`:false, `wie`:false, `wieder`:false, `wieso`:false, `will`:false, `wir`:false, `wird`:false, `wirst`:false, `with`:false, `woher`:false, `wohin`:false, `wol`:false,
 	`wollen`:false, `wont`:false, `would`:false, `wouldnt`:false, `wre`:false, `wurde`:false, `wurden`:false, `wurdest`:false, `yet`:false, `you`:false, `youd`:false, `youll`:false, `your`:false, `yours`:false, `youve`:false, `zero`:false, `zugleich`:false,
-	`zum`:false, `zur`:false, `zwar`:false, `zwei`:false, `zweimal`:false, `zweite`:false,
+	`zum`:false, `zur`:false, `zwar`:false, `zwei`:false, `zweimal`:false, `zweite`:false, `some`:false, `most`:false, `other`:false, `because`:false, `many`:false, `much`:false, 
 }
 
 type keyVal struct {
@@ -128,7 +128,7 @@ func Bigram(b []byte, num int) []string {
 				if _, ok = stopwords[string(d)]; !ok {
 					word1 = string(word)
 					if last {
-						keywords[word1 + ` ` + lastword]++
+						keywords[lasword + ` ` + word1]++
 					}
 					lastword = word1
 					last = true
@@ -160,7 +160,7 @@ func Ngram(b []byte, num int) []string {
 				if _, ok = stopwords[string(d)]; !ok {
 					word1 = string(word)
 					if last {
-						keywords[word1 + ` ` + lastword]++
+						keywords[lasword + ` ` + word1]++
 					} else {
 						keywords[word1]++
 					}
