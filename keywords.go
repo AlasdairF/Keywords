@@ -103,7 +103,7 @@ func Monogram(b []byte, num int) ([]string, error) {
 	keywords := make(map[string]uint32)
 	wordfn := func(word []byte) {
 		if d, err = deaccent.Bytes(word); err != nil {
-			return []string{}, err
+			return nil, err
 		}
 		if len(d) >= 3 {
 			if _, ok = stopwords[string(d)]; !ok {
@@ -125,7 +125,7 @@ func Bigram(b []byte, num int) ([]string, error) {
 	keywords := make(map[string]uint32)
 	wordfn := func(word []byte) {
 		if d, err = deaccent.Bytes(word); err != nil {
-			return []string{}, err
+			return nil, err
 		}
 		if len(d) >= 3 {
 			if _, ok = stopwords[string(d)]; !ok {
@@ -156,7 +156,7 @@ func Ngram(b []byte, num int) ([]string, error) {
 	keywords := make(map[string]uint32)
 	wordfn := func(word []byte) {
 		if d, err = deaccent.Bytes(word); err != nil {
-			return []string{}, err
+			return nil, err
 		}
 		if len(d) >= 3 {
 			if _, ok = stopwords[string(d)]; !ok {
