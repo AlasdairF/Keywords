@@ -95,7 +95,7 @@ func (a sorter) Len() int           { return len(a) }
 func (a sorter) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a sorter) Less(i, j int) bool { return a[i].v > a[j].v } // descending order
 
-func Monogram(b []byte, num int) ([]string, error) {
+func Monogram(b []byte, num int) []string {
 	
 	var err error
 	var d []byte
