@@ -1374,7 +1374,7 @@ func (k *keywordsStruct) Bytes(num int) [][]byte {
 	var i, v int
 	var word []byte
 	k.km.Reset()
-	for eof := false; !eof {
+	for eof := false; !eof; {
 		word, v, eof = k.km.Next()
 		lst[i] = keyVal{word, v}
 		i++
