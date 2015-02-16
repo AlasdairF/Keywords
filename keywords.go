@@ -244,7 +244,7 @@ func init() {
 	stopwords.AddUnsorted([]byte(`der`))
 	stopwords.AddUnsorted([]byte(`deren`))
 	stopwords.AddUnsorted([]byte(`des`))
-	stopwords.AddUnsorted([]byte(`desde`)
+	stopwords.AddUnsorted([]byte(`desde`))
 	stopwords.AddUnsorted([]byte(`deshalb`))
 	stopwords.AddUnsorted([]byte(`desiderare`))
 	stopwords.AddUnsorted([]byte(`dessen`))
