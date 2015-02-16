@@ -4,7 +4,6 @@ import (
  "github.com/AlasdairF/Tokenize"
  "github.com/AlasdairF/Deaccent"
  "github.com/AlasdairF/BinSearch"
- "github.com/AlasdairF/Unleak"
  "sort"
  "bytes"
 )
@@ -1274,7 +1273,7 @@ func init() {
 
 type keyVal struct {
 	k []byte
-	v uint32
+	v int
 }
 type sorter []keyVal
 func (a sorter) Len() int           { return len(a) }
