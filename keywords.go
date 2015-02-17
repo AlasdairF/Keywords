@@ -1372,11 +1372,12 @@ func (k *keywordsStruct) Bytes(num int) [][]byte {
 	lst := make(sorter, k.km.Len())
 	var i, v int
 	var word []byte
-	k.km.Reset()
-	for eof := false; !eof; {
-		word, v, eof = k.km.Next()
-		lst[i] = keyVal{word, v}
-		i++
+	if k.km.Reset() {
+		for eof := false; !eof; {
+			word, v, eof = k.km.Next()
+			lst[i] = keyVal{word, v}
+			i++
+		}
 	}
 	sort.Sort(lst)
 	if num > i {
@@ -1394,11 +1395,12 @@ func (k *keywordsStruct) Strings(num int) []string {
 	lst := make(sorter, k.km.Len())
 	var i, v int
 	var word []byte
-	k.km.Reset()
-	for eof := false; !eof; {
-		word, v, eof = k.km.Next()
-		lst[i] = keyVal{word, v}
-		i++
+	if k.km.Reset() {
+		for eof := false; !eof; {
+			word, v, eof = k.km.Next()
+			lst[i] = keyVal{word, v}
+			i++
+		}
 	}
 	sort.Sort(lst)
 	if num > i {
