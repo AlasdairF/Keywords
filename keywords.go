@@ -1269,6 +1269,7 @@ func init() {
 	stopwords.AddUnsorted([]byte(`zweimal`))
 	stopwords.AddUnsorted([]byte(`zweite`))
 	stopwords.Build()
+	stopwords.Optimize()
 }
 
 type keyVal struct {
