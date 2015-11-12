@@ -4,7 +4,7 @@ import (
  "github.com/AlasdairF/Tokenize"
  "github.com/AlasdairF/Deaccent"
  "github.com/AlasdairF/BinSearch"
- "github.com/AlasdairF/Buffer"
+ "github.com/AlasdairF/Custom"
  "sort"
 )
 
@@ -1310,7 +1310,7 @@ func (k *keywordsStruct) Bigram(b []byte) {
 	var err error
 	var d []byte
 	var ok, last bool
-	lastword := buffer.NewBuffer(32)
+	lastword := custom.NewBuffer(32)
 	wordfn := func(word []byte) {
 		if d, err = deaccent.Bytes(word); err == nil {
 			if len(d) >= 3 {
@@ -1340,7 +1340,7 @@ func (k *keywordsStruct) Ngram(b []byte) {
 	var err error
 	var d []byte
 	var ok, last bool
-	lastword := buffer.NewBuffer(32)
+	lastword := custom.NewBuffer(32)
 	wordfn := func(word []byte) {
 		if d, err = deaccent.Bytes(word); err == nil {
 			if len(d) >= 3 {
