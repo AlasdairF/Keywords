@@ -1311,6 +1311,7 @@ func (k *keywordsStruct) Bigram(b []byte) {
 	var d []byte
 	var ok, last bool
 	lastword := custom.NewBuffer(32)
+	defer lastword.Close()
 	wordfn := func(word []byte) {
 		if d, err = deaccent.Bytes(word); err == nil {
 			if len(d) >= 3 {
@@ -1341,6 +1342,7 @@ func (k *keywordsStruct) Ngram(b []byte) {
 	var d []byte
 	var ok, last bool
 	lastword := custom.NewBuffer(32)
+	defer lastword.Close()
 	wordfn := func(word []byte) {
 		if d, err = deaccent.Bytes(word); err == nil {
 			if len(d) >= 3 {
